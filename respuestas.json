@@ -1,0 +1,12 @@
+{
+    "hola": "¡Hola! Soy tu asistente de cursos TechMinds. Pregúntame sobre los cursos disponibles.",
+    "cursos disponibles": "Actualmente tenemos cursos básicos de Python, R, SQL, HTML y próximamente Inteligencia Artificial.",
+    "curso de python": "El curso básico de Python cubre desde print () hasta funciones, tipos de datos y estructuras de control. Link del curso: https://www.youtube.com/watch?v=kNaRLbQfWEE&t=2010s",
+    "curso de r": "El curso básico de R enseña desde operaciones matemáticas hasta visualización con ggplot2. Link del curso: https://www.youtube.com/watch?v=jdWpjTSyJuY",
+    "curso de sql": "El curso de SQL te enseña SELECT, ORDER BY, WHERE, GROUP BY, JOIN, y más, usando la base de datos Northwind. Link del curso: https://www.youtube.com/watch?v=f32dzGS2eKo",
+    "grupo de whatsapp": "Podrás unirte al grupo de whatsapp aquí TechMinds1689",
+    "telegram": "También tenemos comunidad en Telegram. Únete aquí TechMinds1689",
+    "gracias": "¡De nada! Estoy aquí para ayudarte.",
+    "default": "No entendí tu pregunta. Puedes preguntarme por ejemplo: ¿Qué cursos tienes disponibles? ó ¿Cómo me uno al grupo de whatsapp?"
+}
+

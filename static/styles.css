@@ -1,0 +1,259 @@
+:root {
+    --primary: #FDDA24;
+    /* Bancolombia Yellow-ish */
+    --primary-hover: #e0c21f;
+    --text-main: #2C2A29;
+    --text-muted: #666666;
+    --bg-page: #F4F6F9;
+    --bg-card: #FFFFFF;
+    --border-color: #E6E6E6;
+    --success: #00C853;
+    --danger: #D32F2F;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', 'Roboto', sans-serif;
+    /* Clean corporate font */
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 40px;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    padding: 0 1rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.25rem;
+}
+
+header p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Card Style */
+form,
+.results-card {
+    background: var(--bg-card);
+    border-radius: 8px;
+    padding: 2.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    /* Very subtle shadow */
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    padding: 10px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #DDDDDD;
+    border-radius: 0;
+    color: var(--text-main);
+    font-size: 1.1rem;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+input::placeholder {
+    color: #CCC;
+}
+
+/* Buttons */
+button {
+    width: 100%;
+    padding: 16px;
+    background: var(--primary);
+    color: var(--text-main);
+    border: none;
+    border-radius: 4px;
+    /* Slightly rounded, almost square */
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button:hover {
+    background: var(--primary-hover);
+}
+
+/* Results */
+.hidden {
+    display: none;
+}
+
+.result-header {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.result-header h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.badge {
+    display: inline-block;
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.result-item .label {
+    color: var(--text-muted);
+}
+
+.result-item .value {
+    font-weight: 500;
+}
+
+.result-total {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.result-total .label {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.result-total .value.large {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+/* Suggestion Box */
+.suggestion-box {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: #FFFDE7;
+    /* Light yellow bg */
+    border-left: 4px solid var(--primary);
+    border-radius: 4px;
+}
+
+.suggestion-content h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #F57F17;
+}
+
+.suggestion-content p {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    margin-bottom: 1rem;
+}
+
+#btnSwitch {
+    width: auto;
+    padding: 8px 16px;
+    background: transparent;
+    border: 2px solid var(--text-main);
+    color: var(--text-main);
+    font-size: 0.9rem;
+    margin-top: 0;
+}
+
+#btnSwitch:hover {
+    background: var(--text-main);
+    color: white;
+}
+
+/* Loader */
+.loader {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #333;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: none;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+button.loading .btn-text {
+    display: none;
+}
+
+button.loading .loader {
+    display: block;
+}
+
+.error-message {
+    margin-top: 1rem;
+    color: var(--danger);
+    text-align: center;
+    background: #ffebee;
+    padding: 10px;
+    border-radius: 4px;
+}

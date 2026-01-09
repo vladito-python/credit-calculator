@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Crédito Premium</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+
+    <div class="container">
+        <header>
+            <h1>Calculadora de Crédito</h1>
+            <p>Powered by Python</p>
+        </header>
+
+        <main>
+            <form id="calcForm">
+                <div class="form-group">
+                    <label for="monto">Monto Solicitado ($)</label>
+                    <input type="text" id="monto" name="monto" placeholder="Ej: 4,000,000" inputmode="numeric" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="plazo">Plazo (Meses)</label>
+                    <input type="number" id="plazo" name="plazo" placeholder="Ej: 12" required min="1" max="36">
+                </div>
+
+                <div class="form-group">
+                    <label for="seguro">Seguro ($)</label>
+                    <input type="text" id="seguro" name="seguro" placeholder="Ej: 10,000" inputmode="numeric" required>
+                </div>
+
+                <button type="submit" id="btnCalcular">
+                    <span class="btn-text">Calcular Crédito</span>
+                    <div class="loader" id="loader"></div>
+                </button>
+            </form>
+
+            <div id="results" class="results-card hidden">
+                <div class="result-header">
+                    <h2>Resultados</h2>
+                    <span class="badge" id="fundName">Fondo Desconocido</span>
+                </div>
+
+                <div class="result-body">
+                    <div class="result-item">
+                        <span class="label">Monto Solicitado</span>
+                        <span class="value" id="resMonto">$0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Plazo</span>
+                        <span class="value" id="resPlazo">0 meses</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Seguro Total</span>
+                        <span class="value" id="resSeguro">$0</span>
+                    </div>
+                    <div class="result-item highlight">
+                        <span class="label">Tasa Comisión</span>
+                        <span class="value" id="resTasa">0.00%</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Valor Comisión</span>
+                        <span class="value" id="resComisionValor">$0</span>
+                    </div>
+
+                    <hr>
+
+                    <div class="result-total">
+                        <span class="label">Total valor de crédito</span>
+                        <span class="value large" id="resCreditoTotal">$0</span>
+                    </div>
+                </div>
+
+                <div id="suggestionBox" class="suggestion-box hidden">
+                    <div class="suggestion-icon">💡</div>
+                    <div class="suggestion-content">
+                        <h3>Mejora la garantía</h3>
+                        <p id="sugText">El fondo de garantías EMP023 está disponible con una tasa de <span
+                                id="sugAltRate"></span>%.</p>
+                        <button id="btnSwitch" type="button">Cambiar a EMP023</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="errorMessage" class="error-message hidden">
+                <p id="errorText"></p>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
