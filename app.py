@@ -29,30 +29,45 @@ def calculate():
         # Calculate costs
         seguro_total = seguro_mensual * plazo
         
-        # Get commissions
-        comision_global = obtener_comision_global(monto, DATOS)
-        comision_antioquia_info = obtener_comision_antioquia(monto, plazo, DATOS)
+        # Iterative calculation logic (Sync with pruebas.py)
+        credito_estimado = monto + seguro_total
+        max_iteraciones = 5
+        credito_anterior = 0
+        seleccion = None
         comision_emp023 = obtener_comision_epm023(plazo, DATOS)
-        
-        opciones = []
-        if comision_global is not None:
-            opciones.append({'id': 'global', 'nombre': 'FONDO GLOBAL', 'tasa': comision_global})
+
+        for iteracion in range(max_iteraciones):
+            comision_global = obtener_comision_global(credito_estimado, DATOS)
+            comision_antioquia_info = obtener_comision_antioquia(credito_estimado, plazo, DATOS)
             
-        if comision_antioquia_info is not None:
-            tasa_ant, nombre_ant = comision_antioquia_info
-            opciones.append({'id': 'antioquia', 'nombre': f'FONDO DE ANTIOQUIA ({nombre_ant})', 'tasa': tasa_ant})
+            opciones = []
+            if comision_global is not None:
+                opciones.append({'id': 'global', 'nombre': 'FONDO GLOBAL', 'tasa': comision_global})
+                
+            if comision_antioquia_info is not None:
+                tasa_ant, nombre_ant = comision_antioquia_info
+                opciones.append({'id': 'antioquia', 'nombre': f'FONDO DE ANTIOQUIA ({nombre_ant})', 'tasa': tasa_ant})
+                
+            if comision_emp023 is not None:
+                opciones.append({'id': 'emp023', 'nombre': 'FONDO EMP023', 'tasa': comision_emp023})
+                
+            if not opciones:
+                return jsonify({'error': 'No se encontró ningún fondo válido para los datos ingresados.'}), 400
+
+            # Sort by rate and pick best
+            opciones.sort(key=lambda x: x['tasa'])
+            seleccion = opciones[0]
             
-        if comision_emp023 is not None:
-            opciones.append({'id': 'emp023', 'nombre': 'FONDO EMP023', 'tasa': comision_emp023})
+            credito_estimado = obtener_credito_total(seguro_total, monto, seleccion['tasa'])
             
-        if not opciones:
+            if abs(credito_estimado - credito_anterior) < 1000:
+                break
+            credito_anterior = credito_estimado
+
+        if seleccion is None:
             return jsonify({'error': 'No se encontró ningún fondo válido para los datos ingresados.'}), 400
 
-        # Sort by rate
-        opciones.sort(key=lambda x: x['tasa'])
-        seleccion = opciones[0]
-        
-        # Suggestion Logic
+        # Suggestion Logic (EMP023)
         sugerencia = None
         if ('FONDO GLOBAL' in seleccion['nombre'] or 'FONDO DE ANTIOQUIA' in seleccion['nombre']) and comision_emp023 is not None:
             if seleccion['nombre'] != 'FONDO EMP023':
@@ -61,8 +76,7 @@ def calculate():
                     'alternativa': {'id': 'emp023', 'nombre': 'FONDO EMP023', 'tasa': comision_emp023}
                 }
 
-        # Calculate totals for the best option
-        credito_total = obtener_credito_total(seguro_total, monto, seleccion['tasa'])
+        credito_total = credito_estimado
         
         if credito_total > 39000000:
             return jsonify({'error': f'El valor del crédito total (${credito_total:,.0f}) supera el máximo de $39,000,000.'}), 400
@@ -86,11 +100,14 @@ def calculate():
 def recalculate_specific():
     # Endpoint to force calculation with a specific fund (for the suggestion switch)
     try:
-        data = request.json
-        monto = float(data['monto'])
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'No se recibieron datos JSON'}), 400
+            
+        monto = float(data.get('monto', 0))
         # plazo = int(data['plazo']) # Not needed for credit calc but kept for consistency
-        seguro_total = float(data['seguro_total'])
-        tasa = float(data['tasa'])
+        seguro_total = float(data.get('seguro_total', 0))
+        tasa = float(data.get('tasa', 0))
         
         credito_total = obtener_credito_total(seguro_total, monto, tasa)
         
